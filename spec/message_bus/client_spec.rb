@@ -5,10 +5,11 @@ RSpec.describe MessageBus::Client do
     expect(MessageBus::Client::VERSION).not_to be nil
   end
 
-  def write_message(message, user = 'message_bus-client')
-    Excon.post(URI.join(self.class::SERVER_BASE, '/message').to_s,
+  def write_message(message, user: 'message_bus-client', channel:)
+    response = Excon.post(URI.join(self.class::SERVER_BASE, channel).to_s,
                body: URI.encode_www_form(name: user, data: message),
                headers: { 'Content-Type' => 'application/x-www-form-urlencoded' })
+    puts "Response to write #{message} into #{channel} is #{response.status}"
   end
 
   subject { MessageBus::Client.new(self.class::SERVER_BASE) }
@@ -47,7 +48,7 @@ RSpec.describe MessageBus::Client do
       end
 
       until result
-        write_message(text) # Keep writing because the message bus might not have started.
+        write_message(text, channel: "/message") # Keep writing because the message bus might not have started.
         sleep(1)
       end
     end
@@ -82,7 +83,7 @@ RSpec.describe MessageBus::Client do
       end
 
       until result
-        write_message(text) # Keep writing because the message bus might not have started.
+        write_message(text, channel: "/message") # Keep writing because the message bus might not have started.
         sleep(1)
       end
     end
@@ -92,21 +93,22 @@ RSpec.describe MessageBus::Client do
     subject.start
     subject.pause
 
+    channel = "/message"
     text = "Hello Pause! #{Random.rand}"
     result = false
-    subject.subscribe('/message') {}
+    subject.subscribe(channel) {}
     expect(subject).to receive(:handle_messages).and_wrap_original do |original, *args|
       result = true if args.first && args.first.any? { |message| message['data']['data'] == text }
       original.call(*args)
     end.at_least(:once)
 
     until result
-      write_message(text) # Keep writing because the message bus might not have started.
+      write_message(text, channel: channel) # Keep writing because the message bus might not have started.
       sleep(1)
     end
     result = false
 
-    subject.subscribe('/message') do |payload|
+    subject.subscribe(channel) do |payload|
       result = result || payload['data'] == text
     end
 
