@@ -11,9 +11,12 @@ task :server do
   end
 
   at_exit do
-    $stderr.puts "Killing pid #{pid}"
-    Process.kill('KILL', pid)
-    Process.wait(pid)
+    child_pid = `pgrep -P #{pid}`.to_i
+    pids = [child_pid, pid]
+    pids.each do |pid|
+      $stderr.puts "Killing pid #{pid}"
+      Process.kill('KILL', pid)
+    end
   end
 
   sleep 3
