@@ -1,5 +1,5 @@
 # MessageBusClient
-[![Build Status](https://travis-ci.org/bloom-solutions/message_bus_client.svg?branch=master)](https://travis-ci.org/bloom-solutions/message_bus_client)
+[![Build Status](https://travis-ci.com/bloom-solutions/message_bus_client.svg?branch=master)](https://travis-ci.com/bloom-solutions/message_bus_client)
 
 This is a fork of [lowjoel's](https://github.com/lowjoel) [message_bus-client](https://github.com/lowjoel/message_bus-client) with improvements we've been wanting to merge in. Because that repository is no longer active, this gem has been released as `message_bus_client`.
 
