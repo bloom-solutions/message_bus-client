@@ -6,12 +6,12 @@ require 'message_bus_client/version'
 Gem::Specification.new do |spec|
   spec.name          = 'message_bus_client'
   spec.version       = MessageBusClient::VERSION
-  spec.authors       = ['Joel Low']
-  spec.email         = ['joel@joelsplace.sg']
+  spec.authors       = ['Joel Low', "Ramon Tayag"]
+  spec.email         = ['joel@joelsplace.sg', "ramon.tayag@gmail.com"]
 
   spec.summary       = 'Ruby client for Message Bus'
   spec.description   = 'Implements a client for Message Bus, with communication over HTTP'
-  spec.homepage      = 'https://github.com/lowjoel/message_bus-client'
+  spec.homepage      = 'https://github.com/bloom-solutions/message_bus_client'
   spec.license       = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").
